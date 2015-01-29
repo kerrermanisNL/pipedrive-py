@@ -1,10 +1,10 @@
 # encoding:utf-8
-from base import BaseResource, CollectionResponse, PipedriveAPI, dict_to_model, \
-    PipedriveDateTime, PipedriveTime, PipedriveDate
+from base import BaseResource, CollectionResponse, PipedriveAPI, dict_to_model
 from schematics.models import Model
 from schematics.types import (
     StringType, IntType, DateTimeType
 )
+from types import PipedriveDate, PipedriveTime, PipedriveDateTime
 
 
 class Activity(Model):

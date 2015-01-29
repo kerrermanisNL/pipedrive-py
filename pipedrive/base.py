@@ -1,12 +1,12 @@
 # encoding:utf-8
 from copy import deepcopy
-import datetime
-import requests
-
 from logging import getLogger
+
+import requests
 from schematics.models import Model
-from schematics.types import BooleanType, DateType
-from schematics.types.compound import ListType, DictType, ModelType
+from schematics.types import BooleanType
+from schematics.types.compound import ModelType
+
 
 logger = getLogger('pipedrive.api')
 
@@ -135,22 +135,3 @@ def dict_to_model(data, model_class):
     safe_data = {key: data[key] for key in safe_keys}
     return model_class(raw_data=safe_data)
 
-
-class PipedriveDateTime(DateType):
-    def to_native(self, value, context=None):
-        return datetime.datetime.strptime(value, "%Y-%m-%d %H:%M:%S")
-    
-    
-class PipedriveDate(DateType):
-    def to_native(self, value, context=None):
-        return datetime.datetime.strptime(value, "%Y-%m-%d")
-
-
-class PipedriveTime(DateType):
-    def to_native(self, value, context=None):
-        minutes, seconds = [int(x) for x in value.split(':')]
-        return minutes * 60 + seconds
-    
-    def to_primitive(self, value, context=None):
-        minutes, seconds = divmod(value, 60)
-        return "%s:%s" % (minutes, seconds)
