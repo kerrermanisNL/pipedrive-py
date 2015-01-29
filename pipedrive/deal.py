@@ -25,7 +25,6 @@ class DealStatusType(StringType):
                         "%s is not a valid deal status" % value])
 
 
-
 class Deal(Model):
     title = StringType(required=True)
     value = DecimalType(required=False)
