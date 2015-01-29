@@ -23,19 +23,22 @@ Usage
 -----
 
 Sample usage:
-
+```python
   from pipedrive import PipedriveAPI
   api = PipedriveAPI('your api token')
   print api.deal.detail(200).user.email # someone@example.com
+```
   
   
 Creating an activity:
-
+```python
   from activity import Activity
   activity = Activity(raw_data={'subject': "Do something", 'type': "Call me!"})
   created_activity = api.activity.create(activity)
   print created_activity.id
-  
+```
+
+
   
 Current Status
 --------------
