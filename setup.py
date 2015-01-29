@@ -10,7 +10,7 @@ def read(*paths):
 
 setup(
     name='pipedrive-py',
-    version='0.1.0',
+    version='0.2.0',
     description='Python lib for the pipedrive.com api',
     long_description=(read('README.md') + '\n\n' +
                       read('HISTORY.md') + '\n\n' +
