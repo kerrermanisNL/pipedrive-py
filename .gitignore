@@ -1,0 +1,6 @@
+dist
+*.pyc
+/build/
+/pipedrive_py.egg-info/
+/runme.py
+.idea

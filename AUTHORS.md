@@ -1,0 +1,1 @@
+Arthur Debert <arthur@loggi.com>Topic :: Software Development :: Libraries :: Python Modules

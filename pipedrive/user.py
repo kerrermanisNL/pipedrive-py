@@ -1,0 +1,19 @@
+# encoding:utf-8
+from schematics.exceptions import ValidationError
+from base import BaseResource, PipedriveAPI, CollectionResponse, dict_to_model, \
+    PipedriveDateTime
+from schematics.models import Model
+from schematics.types import (
+    StringType, IntType, DecimalType, DateTimeType,
+    EmailType, BooleanType)
+from schematics.types.compound import ListType
+
+
+class User(Model):
+    id = IntType()
+    name = StringType()
+    email = EmailType()
+    has_pic = BooleanType()
+
+    def __unicode__(self):
+        return self.name or str(self.id)
