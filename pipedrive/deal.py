@@ -27,6 +27,7 @@ class DealStatusType(StringType):
 
 class Deal(Model):
     title = StringType(required=True)
+    id = IntType(required=False)
     value = DecimalType(required=False)
     currency = StringType(required=False)
     user = ModelType(User)
@@ -43,6 +44,7 @@ class DealResource(BaseResource):
     API_ACESSOR_NAME = 'deal'
     LIST_REQ_PATH = '/deals'
     DETAIL_REQ_PATH = '/deals/{id}'
+    FIND_REQ_PATH = '/deals/find'
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
@@ -54,5 +56,8 @@ class DealResource(BaseResource):
 
     def list(self):
         return CollectionResponse(self._list(), Deal)
+
+    def find(self, term):
+        return CollectionResponse(self._find(term), Deal)
 
 PipedriveAPI.register_resource(DealResource)

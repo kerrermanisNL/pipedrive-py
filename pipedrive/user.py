@@ -10,7 +10,7 @@ from types import PipedriveDateTime
 
 
 class User(Model):
-    id = IntType()
+    id = IntType(required=True)
     name = StringType()
     email = EmailType()
     has_pic = BooleanType()

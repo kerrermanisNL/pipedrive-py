@@ -55,6 +55,7 @@ class BaseResource(object):
     API_ACESSOR_NAME = ''
     LIST_REQ_PATH = None
     DETAIL_REQ_PATH = None
+    FIND_REQ_PATH = None
 
     def __init__(self, api):
         self.api = api
@@ -90,6 +91,11 @@ class BaseResource(object):
         url = self.DETAIL_REQ_PATH % resource_ids
         return self.send_request('GET', url, params, data)
 
+    def _find(self, term, params=None, data=None):
+        params = params or {}
+        params['term'] = term
+        return self.send_request('GET', self.FIND_REQ_PATH, params, data)
+
 
 class CollectionResponse(Model):
     items = []
@@ -98,6 +104,7 @@ class CollectionResponse(Model):
     def __init__(self, response, model_class):
         super(CollectionResponse, self).__init__()
         serialized = response.json()
+        import ipdb; ipdb.set_trace()
         items = serialized['data'] or []
         self.items = [dict_to_model(one, model_class) for one in items]
 
@@ -126,8 +133,12 @@ def dict_to_model(data, model_class):
         if isinstance(model_class._fields[key], ModelType):
             response_key = key + "_id"
             if response_key in data:
-                value = dict_to_model(data[response_key],
-                                      getattr(model_class, key).model_class)
+                if data[response_key] is dict:
+                    value = dict_to_model(data[response_key],
+                                          getattr(model_class, key).model_class)
+                else:
+                    value = getattr(model_class, key).model_class(
+                        {'id': data[response_key]})
                 del data[response_key]
                 data[key] = value
 
