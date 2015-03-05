@@ -104,7 +104,6 @@ class CollectionResponse(Model):
     def __init__(self, response, model_class):
         super(CollectionResponse, self).__init__()
         serialized = response.json()
-        import ipdb; ipdb.set_trace()
         items = serialized['data'] or []
         self.items = [dict_to_model(one, model_class) for one in items]
 
