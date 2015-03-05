@@ -133,7 +133,7 @@ def dict_to_model(data, model_class):
         if isinstance(model_class._fields[key], ModelType):
             response_key = key + "_id"
             if response_key in data:
-                if data[response_key] is dict:
+                if isinstance(data[response_key], dict):
                     value = dict_to_model(data[response_key],
                                           getattr(model_class, key).model_class)
                 else:

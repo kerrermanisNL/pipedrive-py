@@ -1,0 +1,97 @@
+{
+    "success": true,
+    "data": {
+        "id": 1,
+        "user_id": 666,
+        "person_id": null,
+        "org_id": null,
+        "stage_id": 1,
+        "title": "From api",
+        "value": 0,
+        "currency": "BRL",
+        "add_time": "2015-01-28 23:28:43",
+        "update_time": "2015-01-28 23:28:45",
+        "stage_change_time": "2015-01-28 23:28:43",
+        "active": true,
+        "deleted": false,
+        "status": "open",
+        "next_activity_date": null,
+        "next_activity_time": null,
+        "next_activity_id": null,
+        "last_activity_id": null,
+        "last_activity_date": null,
+        "lost_reason": null,
+        "visible_to": "0",
+        "close_time": null,
+        "pipeline_id": 1,
+        "won_time": null,
+        "lost_time": null,
+        "products_count": null,
+        "files_count": null,
+        "notes_count": 0,
+        "followers_count": 1,
+        "email_messages_count": null,
+        "activities_count": null,
+        "done_activities_count": null,
+        "undone_activities_count": null,
+        "participants_count": 0,
+        "expected_close_date": null,
+        "stage_order_nr": 1,
+        "person_name": null,
+        "org_name": null,
+        "next_activity_subject": null,
+        "next_activity_type": null,
+        "next_activity_duration": null,
+        "next_activity_note": null,
+        "formatted_value": "BR$0",
+        "weighted_value": 0,
+        "formatted_weighted_value": "BR$0",
+        "rotten_time": null,
+        "owner_name": "Arthur Debert",
+        "cc_email": "staging-testing+deal1@example.com",
+        "org_hidden": false,
+        "person_hidden": false,
+        "average_time_to_won": {
+            "y": 0,
+            "m": 0,
+            "d": 0,
+            "h": 0,
+            "i": 0,
+            "s": 0,
+            "total_seconds": 0
+        },
+        "average_stage_progress": 0,
+        "age": {
+            "y": 0,
+            "m": 0,
+            "d": 0,
+            "h": 0,
+            "i": 33,
+            "s": 59,
+            "total_seconds": 2039
+        },
+        "stay_in_pipeline_stages": {
+            "times_in_stages": {
+                "1": 2039
+            },
+            "order_of_stages": [
+                1
+            ]
+        },
+        "last_activity": null,
+        "next_activity": null
+    },
+    "additional_data": {
+        "dropbox_email": "staging-testing+deal1@example.com"
+    },
+    "related_objects": {
+        "user": {
+            "666": {
+                "id": 666,
+                "name": "Arthur Debert",
+                "email": "arthur@example.com",
+                "has_pic": true
+            }
+        }
+    }
+}

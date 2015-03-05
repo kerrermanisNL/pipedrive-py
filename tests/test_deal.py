@@ -17,6 +17,11 @@ class DealModelTest(TestCase):
         self.assertIsNone(deal.validate())
 
     def test_nested_user(self):
-        data = get_test_data('deal-detail.json')
-        model = dict_to_model(data, Deal)
-        self.assertTrue(isinstance(model.user, User))
+        for json in ['deal-detail.json', 'deal-detail-numeric-user-id.json']:
+            data = get_test_data(json)
+            model = dict_to_model(data, Deal)
+            self.assertTrue(isinstance(model.user, User))
+
+
+if __name__ == '__main__':
+    unittest.main()
