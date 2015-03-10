@@ -31,8 +31,9 @@ class PipedriveAPI(object):
         url = BASE_URL + path
         try:
             return requests.request(method, url, params=params, data=data)
-        except:
-            logger.exception("Request failed")
+        except Exception as err:
+            logger.exception("Request failed: %s" % err.message)
+            raise err
 
     @staticmethod
     def register_resource(resource_class):

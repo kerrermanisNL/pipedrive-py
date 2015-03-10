@@ -9,6 +9,7 @@ from types import PipedriveDate, PipedriveTime, PipedriveDateTime
 
 class Activity(Model):
     subject = StringType(required=True)
+    done = IntType(required=False)
     type = StringType(required=True)
     id = IntType(required=False)
     duration = PipedriveTime(required=False)
