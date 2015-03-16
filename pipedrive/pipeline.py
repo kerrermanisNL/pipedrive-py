@@ -1,0 +1,35 @@
+# encoding:utf-8
+from schematics.exceptions import ValidationError
+from base import BaseResource, PipedriveAPI, CollectionResponse, dict_to_model
+from schematics.models import Model
+from schematics.types import StringType, IntType
+from types import PipedriveDateTime, PipedriveBoolean
+
+
+class Pipeline(Model):
+    """Represents one of the pipelines in the Pipedrive ecosystem"""
+    id = IntType(required=False)
+    name = StringType(required=False)
+    order_nr = IntType(required=False, min_value=0)
+    active = PipedriveBoolean(required=False)
+
+
+class PipelineResource(BaseResource):
+    API_ACESSOR_NAME = 'pipeline'
+    LIST_REQ_PATH = '/pipelines'
+    DETAIL_REQ_PATH = '/pipelines/{id}'
+
+    def detail(self, resource_ids):
+        response = self._detail(resource_ids)
+        return Pipeline(raw_input(response.json))
+
+    def create(self, deal):
+        response = self._create(data=deal.to_native())
+        return dict_to_model(response.json()['data'], Pipeline)
+
+    def list(self):
+        return CollectionResponse(self._list(), Pipeline)
+
+
+
+PipedriveAPI.register_resource(PipelineResource)

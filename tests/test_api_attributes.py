@@ -6,11 +6,8 @@ from pipedrive.base import BaseResource, PipedriveAPI
 class ResourceAccessorAttibute(TestCase):
     def test_registry_does_not_contain(self):
         api = PipedriveAPI('lol')
-        try:
+        with self.assertRaises(AttributeError):
             api.lol
-            raise ValueError("Should have raised an exception")
-        except AttributeError:
-            pass
 
     def test_registry_contains(self):
         BaseResource.API_ACESSOR_NAME = 'sms'
