@@ -3,7 +3,7 @@ from schematics.exceptions import ValidationError
 from base import BaseResource, PipedriveAPI, CollectionResponse, dict_to_model
 from schematics.models import Model
 from schematics.types import StringType, IntType
-from types import PipedriveDateTime, PipedriveBoolean
+from types import PipedriveDateTime
 
 
 class Pipeline(Model):
@@ -11,7 +11,7 @@ class Pipeline(Model):
     id = IntType(required=False)
     name = StringType(required=False)
     order_nr = IntType(required=False, min_value=0)
-    active = PipedriveBoolean(required=False)
+    active = IntType(required=False, choices=(0,1))
 
 
 class PipelineResource(BaseResource):

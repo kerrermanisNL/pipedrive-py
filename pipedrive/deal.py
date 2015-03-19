@@ -10,21 +10,6 @@ from types import PipedriveDateTime
 from user import User
 
 
-class DealStatusType(StringType):
-    OPEN = 'open'
-    WON = 'won'
-    LOST = 'lost'
-    DELETED = 'deleted'
-    VALID_STATUSES = (
-        OPEN, WON, LOST, DELETED
-    )
-
-    def validate(self, value):
-        if value not in DealStatusType.VALID_STATUSES:
-                    raise ValidationError([
-                        "%s is not a valid deal status" % value])
-
-
 class Deal(Model):
     title = StringType(required=True)
     id = IntType(required=False)
@@ -34,7 +19,7 @@ class Deal(Model):
     person_id = IntType(required=False)
     org_id = IntType(required=False)
     stage_id = IntType(required=False)
-    status = DealStatusType(required=False)
+    status = StringType(required=False, choices=('open','won','lost','deleted'))
     lost_reson = StringType(required=False)
     add_time = PipedriveDateTime(required=False)
     visible_to = ListType(IntType)

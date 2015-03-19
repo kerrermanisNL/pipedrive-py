@@ -102,10 +102,16 @@ class CollectionResponse(Model):
     items = []
     success = BooleanType()
 
-    def __init__(self, response, model_class):
+    def __init__(self, response_data, model_class):
+        """response_data can be either a Response object or a list containing
+           the data for each returned object. Useful if the response must be
+           processed before the CollectionResponse is built"""
         super(CollectionResponse, self).__init__()
-        serialized = response.json()
-        items = serialized['data'] or []
+        if isinstance(response_data, list):
+            items = response_data
+        else:
+            serialized = response_data.json()
+            items = serialized['data'] or []
         self.items = [dict_to_model(one, model_class) for one in items]
 
 
