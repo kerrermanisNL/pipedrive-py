@@ -5,20 +5,22 @@ from schematics.models import Model
 from schematics.types import (
     StringType, IntType, DecimalType, DateTimeType
 )
-from schematics.types.compound import ListType, ModelType
-from types import PipedriveDateTime
+from schematics.types.compound import ListType
+from types import PipedriveDateTime, PipedriveModelType
 from user import User
-
+# from person import Person
+from organization import Organization
+from stage import Stage
 
 class Deal(Model):
     title = StringType(required=True)
     id = IntType(required=False)
     value = DecimalType(required=False)
     currency = StringType(required=False)
-    user = ModelType(User)
-    person_id = IntType(required=False)
-    org_id = IntType(required=False)
-    stage_id = IntType(required=False)
+    user_id = PipedriveModelType(User, required=False)
+    # person_id = PipedriveModelType(Person, required=False)
+    org_id = PipedriveModelType(Organization, required=False)
+    stage_id = PipedriveModelType(Stage, required=False)
     status = StringType(required=False, choices=('open','won','lost','deleted'))
     lost_reson = StringType(required=False)
     add_time = PipedriveDateTime(required=False)

@@ -2,13 +2,14 @@
 from base import BaseResource, PipedriveAPI, CollectionResponse, dict_to_model
 from schematics.models import Model
 from schematics.types import StringType, IntType, FloatType
-
+from types import PipedriveModelType
+from pipeline import Pipeline
 
 class Stage(Model):
     """Represents a stage in a pipeline"""
     id = IntType(required=False)
     name = StringType(required=True)
-    pipeline_id = IntType(required=True)
+    pipeline_id = PipedriveModelType(Pipeline, required=True)
     deal_probability = FloatType(required=False)
     rotten_flag = IntType(required=False, choices=(0,1))
     rotten_days = IntType(required=False)

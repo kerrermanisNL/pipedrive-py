@@ -4,8 +4,11 @@ from schematics.models import Model
 from schematics.types import (
     StringType, IntType, DateTimeType
 )
-from types import PipedriveDate, PipedriveTime, PipedriveDateTime
-
+from types import PipedriveDate, PipedriveTime, PipedriveModelType
+from user import User
+# from person import Person
+from organization import Organization
+from stage import Stage
 
 class Activity(Model):
     subject = StringType(required=True)
@@ -13,10 +16,10 @@ class Activity(Model):
     type = StringType(required=True)
     id = IntType(required=False)
     duration = PipedriveTime(required=False)
-    user_id = IntType(required=False)
-    deal_id = IntType(required=False)
-    person_id = IntType(required=False)
-    org_id = IntType(required=False)
+    user_id = PipedriveModelType(User, required=False)
+    deal_id = PipedriveModelType(Deal, required=False)
+    # person_id = PipedriveModelType(Person, required=False)
+    org_id = PipedriveModelType(Organization, required=False)
     note = StringType(required=False)
     due_date = PipedriveDate(required=False)
 
