@@ -5,6 +5,7 @@ from schematics.types import StringType, IntType, FloatType
 from types import PipedriveModelType
 from pipeline import Pipeline
 
+
 class Stage(Model):
     """Represents a stage in a pipeline"""
     id = IntType(required=False)
@@ -17,24 +18,25 @@ class Stage(Model):
 
 
 class StageResource(BaseResource):
+    MODEL_CLASS = Stage
     API_ACESSOR_NAME = 'stage'
     LIST_REQ_PATH = '/stages'
     DETAIL_REQ_PATH = '/stages/{id}'
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return Stage(raw_input(response.json))
+        return self.MODEL_CLASS(raw_input(response.json))
 
     def create(self, deal):
         response = self._create(data=deal.to_native())
-        return dict_to_model(response.json()['data'], Stage)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self):
-        return CollectionResponse(self._list(), Stage)
+        return CollectionResponse(self._list(), self.MODEL_CLASS)
 
     def stages_of_pipeline(self, pipeline):
         params = {'pipeline_id': pipeline.id}
-        return CollectionResponse(self._list(params=params), Stage)
+        return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
 
 
 PipedriveAPI.register_resource(StageResource)

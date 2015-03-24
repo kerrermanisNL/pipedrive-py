@@ -6,9 +6,11 @@ from schematics.types import (
 )
 from types import PipedriveDate, PipedriveTime, PipedriveModelType
 from user import User
+from deal import Deal
 # from person import Person
 from organization import Organization
 from stage import Stage
+
 
 class Activity(Model):
     subject = StringType(required=True)
@@ -25,19 +27,20 @@ class Activity(Model):
 
 
 class ActivityResource(BaseResource):
+    MODEL_CLASS = Activity
     API_ACESSOR_NAME = 'activity'
     LIST_REQ_PATH = '/activities'
     DETAIL_REQ_PATH = '/activities/{id}'
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return Activity(raw_input(response.json))
+        return self.MODEL_CLASS(raw_input(response.json))
 
     def create(self, deal):
         response = self._create(data=deal.to_native())
-        return dict_to_model(response.json()['data'], Activity)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self):
-        return CollectionResponse(self._list(), Activity)
+        return CollectionResponse(self._list(), self.MODEL_CLASS)
     
 PipedriveAPI.register_resource(ActivityResource)

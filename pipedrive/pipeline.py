@@ -15,20 +15,21 @@ class Pipeline(Model):
 
 
 class PipelineResource(BaseResource):
+    MODEL_CLASS = Pipeline
     API_ACESSOR_NAME = 'pipeline'
     LIST_REQ_PATH = '/pipelines'
     DETAIL_REQ_PATH = '/pipelines/{id}'
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return Pipeline(raw_input(response.json))
+        return self.MODEL_CLASS(raw_input(response.json))
 
     def create(self, deal):
         response = self._create(data=deal.to_native())
-        return dict_to_model(response.json()['data'], Pipeline)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self):
-        return CollectionResponse(self._list(), Pipeline)
+        return CollectionResponse(self._list(), self.MODEL_CLASS)
 
 
 

@@ -1,16 +1,38 @@
 # encoding:utf-8
-from schematics.exceptions import ValidationError
 from base import BaseResource, PipedriveAPI, CollectionResponse, dict_to_model
 from schematics.models import Model
-from schematics.types import (
-    StringType, IntType, DecimalType, DateTimeType
-)
-from schematics.types.compound import ListType, ModelType
-from types import PipedriveDateTime
-from django.conf import settings
+from schematics.types import StringType, IntType
+from types import PipedriveModelType
+from user import User
 
-# PIPEDRIVE_CNPJ_FIELD_KEY = getattr(settings, 'PIPEDRIVE_CNPJ_FIELD_KEY', None)
 
 class Organization(Model):
     id = IntType(required=False)
     name = StringType(required=False)
+    owner_id = PipedriveModelType(User, required=False)
+    visible_to = IntType(required=False, choices=(0,1,2))
+    owner_name = StringType(required=False)
+
+
+class OrganizationResource(BaseResource):
+    MODEL_CLASS = Organization
+    API_ACESSOR_NAME = 'organization'
+    LIST_REQ_PATH = '/organizations'
+    DETAIL_REQ_PATH = '/organizations/{id}'
+    FIND_REQ_PATH = '/organizations/find'
+
+    def detail(self, resource_ids):
+        response = self._detail(resource_ids)
+        return self.MODEL_CLASS(raw_input(response.json))
+
+    def create(self, organization):
+        response = self._create(data=organization.to_native())
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
+
+    def list(self):
+        return CollectionResponse(self._list(), self.MODEL_CLASS)
+
+    def find(self, term):
+        return CollectionResponse(self._find(term), self.MODEL_CLASS)
+
+PipedriveAPI.register_resource(OrganizationResource)

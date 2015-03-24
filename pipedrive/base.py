@@ -53,6 +53,7 @@ class BaseResource(object):
             (deletion, updating and detail)
     """
 
+    MODEL_CLASS = Model
     API_ACESSOR_NAME = ''
     LIST_REQ_PATH = None
     DETAIL_REQ_PATH = None

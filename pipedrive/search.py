@@ -26,9 +26,9 @@ class SearchResource(BaseResource):
         return CollectionResponse(items, SearchResult)
 
     def search_single_field(self, term, field, **params):
-        """Search for 'term' in a specific field of a specific type of object
+        """Search for 'term' in a specific field of a specific type of object.
            'field' must be a DealField, OrganizationField, PersonField or 
-           ProductField, all from pipedrive.fields"""
+           ProductField (all from pipedrive.fields)"""
         params.update({
             'term': term,
             'field_type': field.FIELD_PARENT_TYPE,

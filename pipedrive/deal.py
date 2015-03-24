@@ -12,6 +12,7 @@ from user import User
 from organization import Organization
 from stage import Stage
 
+
 class Deal(Model):
     title = StringType(required=True)
     id = IntType(required=False)
@@ -28,6 +29,7 @@ class Deal(Model):
 
 
 class DealResource(BaseResource):
+    MODEL_CLASS = Deal
     API_ACESSOR_NAME = 'deal'
     LIST_REQ_PATH = '/deals'
     DETAIL_REQ_PATH = '/deals/{id}'
@@ -35,16 +37,16 @@ class DealResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return Deal(raw_input(response.json))
+        return self.MODEL_CLASS(raw_input(response.json))
 
     def create(self, deal):
         response = self._create(data=deal.to_native())
-        return dict_to_model(response.json()['data'], Deal)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self):
-        return CollectionResponse(self._list(), Deal)
+        return CollectionResponse(self._list(), self.MODEL_CLASS)
 
     def find(self, term):
-        return CollectionResponse(self._find(term), Deal)
+        return CollectionResponse(self._find(term), self.MODEL_CLASS)
 
 PipedriveAPI.register_resource(DealResource)
