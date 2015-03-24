@@ -2,7 +2,7 @@
 import datetime
 from schematics.types import DateType, BaseType
 from schematics.exceptions import ConversionError
-
+from base import dict_to_model
 
 class PipedriveDate(DateType):
     def to_native(self, value, context=None):
