@@ -11,7 +11,6 @@ class Organization(Model):
     name = StringType(required=False)
     owner_id = PipedriveModelType(User, required=False)
     visible_to = IntType(required=False, choices=(0,1,2))
-    owner_name = StringType(required=False)
 
 
 class OrganizationResource(BaseResource):
@@ -23,10 +22,10 @@ class OrganizationResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return self.MODEL_CLASS(raw_input(response.json))
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, organization):
-        response = self._create(data=organization.to_native())
+        response = self._create(data=organization.to_primitive())
         return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self):

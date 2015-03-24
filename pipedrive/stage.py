@@ -27,8 +27,8 @@ class StageResource(BaseResource):
         response = self._detail(resource_ids)
         return self.MODEL_CLASS(raw_input(response.json))
 
-    def create(self, deal):
-        response = self._create(data=deal.to_native())
+    def create(self, stage):
+        response = self._create(data=stage.to_primitive())
         return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self):

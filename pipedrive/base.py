@@ -83,15 +83,15 @@ class BaseResource(object):
         return self.send_request('GET', self.LIST_REQ_PATH, params, data)
 
     def _delete(self, resource_ids, params=None, data=None):
-        url = self.DETAIL_REQ_PATH % resource_ids
+        url = self.DETAIL_REQ_PATH.format(id=resource_ids)
         return self.send_request('DELETE', url, params=None, data=None)
 
     def _update(self, resource_ids, params=None, data=None):
-        url = self.DETAIL_REQ_PATH % resource_ids
+        url = self.DETAIL_REQ_PATH.format(id=resource_ids)
         return self.send_request('PUT', url, params=None, data=None)
 
     def _detail(self, resource_ids, params=None, data=None):
-        url = self.DETAIL_REQ_PATH % resource_ids
+        url = self.DETAIL_REQ_PATH.format(id=resource_ids)
         return self.send_request('GET', url, params, data)
 
     def _find(self, term, params=None, data=None):
