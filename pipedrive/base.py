@@ -132,7 +132,9 @@ def dict_to_model(data, model_class):
         Model: With the populated data
     """
     data = deepcopy(data)
-    model_keys = set(model_class.__dict__['_fields'].keys())
+    fields = model_class.fields
+    model_keys = set([fields[field_name].serialized_name or field_name\
+        for field_name in fields])
     safe_keys = set(data.keys()).intersection(model_keys)
     safe_data = {key: data[key] for key in safe_keys}
     return model_class(raw_data=safe_data)
