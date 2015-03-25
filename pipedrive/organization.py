@@ -28,10 +28,15 @@ class OrganizationResource(BaseResource):
         response = self._create(data=organization.to_primitive())
         return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
+    def update(self, organization):
+        response = self._update(organization.id, data=organization.to_primitive())
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
+
     def list(self):
         return CollectionResponse(self._list(), self.MODEL_CLASS)
 
     def find(self, term):
         return CollectionResponse(self._find(term), self.MODEL_CLASS)
+
 
 PipedriveAPI.register_resource(OrganizationResource)

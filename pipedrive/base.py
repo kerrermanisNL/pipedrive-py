@@ -85,11 +85,11 @@ class BaseResource(object):
 
     def _delete(self, resource_ids, params=None, data=None):
         url = self.DETAIL_REQ_PATH.format(id=resource_ids)
-        return self.send_request('DELETE', url, params=None, data=None)
+        return self.send_request('DELETE', url, params, data)
 
     def _update(self, resource_ids, params=None, data=None):
         url = self.DETAIL_REQ_PATH.format(id=resource_ids)
-        return self.send_request('PUT', url, params=None, data=None)
+        return self.send_request('PUT', url, params, data)
 
     def _detail(self, resource_ids, params=None, data=None):
         url = self.DETAIL_REQ_PATH.format(id=resource_ids)
