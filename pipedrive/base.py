@@ -67,8 +67,9 @@ class BaseResource(object):
         response = self.api.send_request(method, path, params, data)
         if 200 <= response.status_code < 400:
             self.process_success(response)
-            return response
-        self.process_error(response)
+        else:
+            self.process_error(response)
+        return response
 
     def process_success(self, data):
         pass
@@ -131,6 +132,8 @@ def dict_to_model(data, model_class):
     Returns:
         Model: With the populated data
     """
+    if data is None:
+        return None
     data = deepcopy(data)
     fields = model_class.fields
     model_keys = set([fields[field_name].serialized_name or field_name\
