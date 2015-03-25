@@ -11,6 +11,7 @@ class Organization(Model):
     name = StringType(required=False)
     owner_id = PipedriveModelType(User, required=False)
     visible_to = IntType(required=False, choices=(0,1,2))
+    address = StringType(required=False)
 
 
 class OrganizationResource(BaseResource):
