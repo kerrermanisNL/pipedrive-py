@@ -117,6 +117,18 @@ class CollectionResponse(Model):
             items = serialized['data'] or []
         self.items = [dict_to_model(one, model_class) for one in items]
 
+    def __len__(self):
+        return len(self.items)
+
+    def __iter__(self):
+        return iter(self.items)
+
+    def __getitem__(self, key):
+        return self.items[key]
+
+    def exists(self):
+        return len(self) > 0
+
 
 def dict_to_model(data, model_class):
     """Converts the json response to a full fledge model
