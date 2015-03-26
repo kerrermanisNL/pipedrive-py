@@ -20,7 +20,7 @@ class SearchResource(BaseResource):
         """Search for 'term' in all fields of all objects"""
         params['term'] = term
         response = self.send_request('GET', self.SEARCH_PATH, params, data=None)
-        items = response.json()['data']
+        items = response.json()['data'] or []
         for item in items:
             item['result'] = item['title']
         return CollectionResponse(items, SearchResult)
@@ -38,7 +38,7 @@ class SearchResource(BaseResource):
         response = self.send_request(
             'GET', self.SEARCH_FIELD_PATH, params, data=None
         )
-        items = response.json()['data']
+        items = response.json()['data'] or []
         for item in items:
             item['result'] = item[field.key]
             item['type'] = field.FIELD_PARENT_TYPE.replace('Field', '')

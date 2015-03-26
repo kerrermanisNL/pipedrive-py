@@ -114,7 +114,7 @@ class CollectionResponse(Model):
             items = response_data
         else:
             serialized = response_data.json()
-            items = serialized['data'] or []
+            items = (serialized and serialized['data']) or []
         self.items = [dict_to_model(one, model_class) for one in items]
 
     def __len__(self):
