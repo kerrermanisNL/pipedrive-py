@@ -4,7 +4,7 @@ from logging import getLogger
 
 import requests
 from schematics.models import Model
-from schematics.types import BooleanType
+from schematics.types import BooleanType, IntType
 from schematics.types.compound import ModelType
 
 
@@ -65,13 +65,13 @@ class BaseResource(object):
 
     def send_request(self, method, path, params, data):
         response = self.api.send_request(method, path, params, data)
-        if 200 <= response.status_code < 400:
+        if response.ok:
             self.process_success(response)
         else:
             self.process_error(response)
         return response
 
-    def process_success(self, data):
+    def process_success(self, response):
         pass
 
     def process_error(self, response):
@@ -104,18 +104,26 @@ class BaseResource(object):
 class CollectionResponse(Model):
     items = []
     success = BooleanType()
+    start = IntType()
+    limit = IntType()
+    next_start = IntType()
+    more_items_in_collection = BooleanType()
 
-    def __init__(self, response_data, model_class):
-        """response_data can be either a Response object or a list containing
-           the data for each returned object. Useful if the response must be
-           processed before the CollectionResponse is built"""
+    def __init__(self, response, model_class):
         super(CollectionResponse, self).__init__()
-        if isinstance(response_data, list):
-            items = response_data
-        else:
-            serialized = response_data.json()
-            items = (serialized and serialized['data']) or []
-        self.items = [dict_to_model(one, model_class) for one in items]
+        if isinstance(response, requests.Response):
+            response = response.json()
+        items = response.get('data', [])
+        self.items = [dict_to_model(item, model_class) for item in items]
+        self.success = response.get('success', False)
+        if 'additional_data' in response and\
+            'pagination' in response['additional_data']:
+            pagination = response['additional_data']['pagination']
+            self.start = pagination.get('start', 0)
+            self.limit = pagination.get('limit', 100)
+            self.next_start = pagination.get('next_start', 0)
+            self.more_items_in_collection =\
+                pagination.get('more_items_in_collection', False)
 
     def __len__(self):
         return len(self.items)

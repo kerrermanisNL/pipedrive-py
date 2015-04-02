@@ -31,11 +31,11 @@ class StageResource(BaseResource):
         response = self._create(data=stage.to_primitive())
         return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
-    def list(self):
-        return CollectionResponse(self._list(), self.MODEL_CLASS)
+    def list(self, **params):
+        return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
 
-    def stages_of_pipeline(self, pipeline):
-        params = {'pipeline_id': pipeline.id}
+    def stages_of_pipeline(self, pipeline, **params):
+        params['pipeline_id'] = pipeline.id
         return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
 
 

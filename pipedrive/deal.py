@@ -43,10 +43,10 @@ class DealResource(BaseResource):
         response = self._create(data=deal.to_primitive())
         return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
-    def list(self):
-        return CollectionResponse(self._list(), self.MODEL_CLASS)
+    def list(self, **params):
+        return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
 
-    def find(self, term):
-        return CollectionResponse(self._find(term), self.MODEL_CLASS)
+    def find(self, term, **params):
+        return CollectionResponse(self._find(term, params=params), self.MODEL_CLASS)
 
 PipedriveAPI.register_resource(DealResource)

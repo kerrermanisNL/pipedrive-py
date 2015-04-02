@@ -42,8 +42,8 @@ class FieldResource(BaseResource):
         response = self._create(data=data)
         return dict_to_model(response.json()['data'], self.FIELD_CLASS)
 
-    def list(self):
-        return CollectionResponse(self._list(), self.FIELD_CLASS)
+    def list(self, **params):
+        return CollectionResponse(self._list(params=params), self.FIELD_CLASS)
 
 
 # Specific classes for fields and their resources

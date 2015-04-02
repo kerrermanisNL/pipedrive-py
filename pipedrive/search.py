@@ -20,10 +20,10 @@ class SearchResource(BaseResource):
         """Search for 'term' in all fields of all objects"""
         params['term'] = term
         response = self.send_request('GET', self.SEARCH_PATH, params, data=None)
-        items = response.json()['data'] or []
-        for item in items:
+        search_result = response.json()
+        for item in search_result.get('data', []):
             item['result'] = item['title']
-        return CollectionResponse(items, SearchResult)
+        return CollectionResponse(search_result, SearchResult)
 
     def search_single_field(self, term, field, **params):
         """Search for 'term' in a specific field of a specific type of object.
@@ -38,11 +38,11 @@ class SearchResource(BaseResource):
         response = self.send_request(
             'GET', self.SEARCH_FIELD_PATH, params, data=None
         )
-        items = response.json()['data'] or []
-        for item in items:
+        search_result = response.json()
+        for item in search_result.get('data', []):
             item['result'] = item[field.key]
             item['type'] = field.FIELD_PARENT_TYPE.replace('Field', '')
-        return CollectionResponse(items, SearchResult)
+        return CollectionResponse(search_result, SearchResult)
 
 
 PipedriveAPI.register_resource(SearchResource)
