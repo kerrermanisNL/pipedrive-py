@@ -13,7 +13,7 @@ class UserResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return self.MODEL_CLASS(raw_input(response.json))
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, user):
         response = self._create(data=user.to_primitive())
@@ -35,7 +35,7 @@ class PipelineResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return self.MODEL_CLASS(raw_input(response.json))
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, pipeline):
         response = self._create(data=pipeline.to_primitive())
@@ -53,7 +53,7 @@ class StageResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return self.MODEL_CLASS(raw_input(response.json))
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, stage):
         response = self._create(data=stage.to_primitive())
@@ -147,7 +147,7 @@ class DealResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return self.MODEL_CLASS(raw_input(response.json))
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, deal):
         response = self._create(data=deal.to_primitive())
@@ -169,7 +169,7 @@ class ActivityResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return self.MODEL_CLASS(raw_input(response.json))
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, activity):
         response = self._create(data=activity.to_primitive())
