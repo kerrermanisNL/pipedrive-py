@@ -11,6 +11,9 @@ class PipedriveDate(DateType):
 
 class PipedriveTime(DateType):
     def to_native(self, value, context=None):
+        if value.find(':') < 0:
+            return 0
+
         minutes, seconds = [int(x) for x in value.split(':')]
         return minutes * 60 + seconds
 

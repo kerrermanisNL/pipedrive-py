@@ -1,4 +1,4 @@
 from base import *
-from deal import *
-from user import *
-from activity import *
+from models import *
+from resources import *
+from fields import *

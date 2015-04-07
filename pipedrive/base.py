@@ -58,6 +58,7 @@ class BaseResource(object):
     LIST_REQ_PATH = None
     DETAIL_REQ_PATH = None
     FIND_REQ_PATH = None
+    RELATED_ENTITIES_PATH = None
 
     def __init__(self, api):
         self.api = api
@@ -99,6 +100,13 @@ class BaseResource(object):
         params = params or {}
         params['term'] = term
         return self.send_request('GET', self.FIND_REQ_PATH, params, data)
+
+    def _related_entities(self, resource_ids, entity_name, entity_class,\
+            params=None, data=None):
+        entity_path = self.RELATED_ENTITIES_PATH.format(id=resource_ids,\
+            entity=entity_name)
+        response = self.send_request('GET', entity_path, params, data)
+        return CollectionResponse(response, entity_class)
 
 
 class CollectionResponse(Model):
