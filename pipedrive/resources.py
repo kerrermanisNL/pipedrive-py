@@ -77,7 +77,7 @@ class SearchResource(BaseResource):
         params['term'] = term
         response = self.send_request('GET', self.SEARCH_PATH, params, data=None)
         search_result = response.json()
-        for item in search_result.get('data', []):
+        for item in search_result.get('data', []) or []:
             item['result'] = item['title']
         return CollectionResponse(search_result, SearchResult)
 
@@ -95,7 +95,7 @@ class SearchResource(BaseResource):
             'GET', self.SEARCH_FIELD_PATH, params, data=None
         )
         search_result = response.json()
-        for item in search_result.get('data', []):
+        for item in search_result.get('data', []) or []:
             item['result'] = item[field.key]
             item['type'] = field.FIELD_PARENT_TYPE.replace('Field', '')
         return CollectionResponse(search_result, SearchResult)
