@@ -76,4 +76,10 @@ class PipedriveModelType(BaseType):
         raise ConversionError(self.messages['value_type'] % self.model_class)            
 
     def to_primitive(self, value, context=None):
-        return value.id
+        if isinstance(value, self.model_class):
+            return value.id
+
+        if isinstance(value, dict):
+            return value['id']
+
+        return value
