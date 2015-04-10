@@ -121,7 +121,7 @@ class CollectionResponse(Model):
         super(CollectionResponse, self).__init__()
         if isinstance(response, requests.Response):
             response = response.json()
-        items = response.get('data', [])
+        items = response.get('data', []) or []
         self.items = [dict_to_model(item, model_class) for item in items]
         self.success = response.get('success', False)
         if 'additional_data' in response and\
