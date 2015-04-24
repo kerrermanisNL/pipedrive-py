@@ -16,7 +16,7 @@ BASE_URL = 'https://api.pipedrive.com/v1'
 class PipedriveAPI(object):
     resource_registry = {}
 
-    def __init__(self, api_token):
+    def __init__(self, api_token=None):
         self.api_token = api_token
 
     def __getattr__(self, item):
@@ -26,6 +26,13 @@ class PipedriveAPI(object):
             raise AttributeError('No resource is registered under that name.')
 
     def send_request(self, method, path, params=None, data=None):
+        if self.api_token in (None, ''):
+            class MockResponse(requests.Response):
+                def json(self):
+                    return {}
+
+            return MockResponse()
+
         params = params or {}
         params['api_token'] = self.api_token
         url = BASE_URL + path
@@ -66,6 +73,7 @@ class BaseResource(object):
 
     def send_request(self, method, path, params, data):
         response = self.api.send_request(method, path, params, data)
+
         if response.ok:
             self.process_success(response)
         else:

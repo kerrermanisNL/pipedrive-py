@@ -67,7 +67,7 @@ class Organization(Model):
     id = IntType(required=False)
     name = StringType(required=False)
     owner_id = PipedriveModelType(User, required=False)
-    visible_to = IntType(required=False, choices=(0,1,2))
+    visible_to = IntType(required=False, choices=(0,1,2,3))
     address = StringType(required=False)
 
 
