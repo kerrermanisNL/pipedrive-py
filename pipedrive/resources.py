@@ -144,6 +144,7 @@ class DealResource(BaseResource):
     LIST_REQ_PATH = '/deals'
     DETAIL_REQ_PATH = '/deals/{id}'
     FIND_REQ_PATH = '/deals/find'
+    RELATED_ENTITIES_PATH = '/deals/{id}/{entity}'
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
@@ -159,6 +160,11 @@ class DealResource(BaseResource):
     def find(self, term, **params):
         return CollectionResponse(self._find(term, params=params),\
             self.MODEL_CLASS)
+
+    def list_activities(self, resource_ids, **params):
+        return self._related_entities(resource_ids, 'activities', Activity,\
+            params=params)
+
 
 
 class ActivityResource(BaseResource):
