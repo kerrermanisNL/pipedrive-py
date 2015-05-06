@@ -185,6 +185,7 @@ class ActivityResource(BaseResource):
         return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
 
 
+
 # Registers the resources
 for resource_class in [
     UserResource,
