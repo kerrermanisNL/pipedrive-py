@@ -37,7 +37,25 @@ class PipedriveAPI(object):
         params['api_token'] = self.api_token
         url = BASE_URL + path
         try:
-            return requests.request(method, url, params=params, data=data)
+            response = requests.request(method, url, params=params, data=data)
+            resp_json = response.json()
+            if not resp_json.get('success', False):
+                request = {
+                    "method": method,
+                    "url": url,
+                    "params": params,
+                    "data": data,
+                }
+
+                raise PipedriveException(
+                    resp_json.get('error', ''),
+                    request,
+                    response
+                )
+            return response
+        except ValueError as err:
+            logger.exception("Request with non-JSON response: %s" % err.message)
+            raise err
         except Exception as err:
             logger.exception("Request failed: %s" % err.message)
             raise err
@@ -46,6 +64,18 @@ class PipedriveAPI(object):
     def register_resource(resource_class):
         PipedriveAPI.resource_registry[
             resource_class.API_ACESSOR_NAME] = resource_class
+
+
+class PipedriveException(Exception):
+    """Exception raised when a response returned by Pipedrive indicates an error
+    """
+    def __init__(self, message, request, response):
+        self.message = message
+        self.request = request
+        self.response = response
+
+    def __str__(self):
+        return self.message
 
 
 class BaseResource(object):
@@ -72,19 +102,7 @@ class BaseResource(object):
         setattr(self.api, self.API_ACESSOR_NAME, self)
 
     def send_request(self, method, path, params, data):
-        response = self.api.send_request(method, path, params, data)
-
-        if response.ok:
-            self.process_success(response)
-        else:
-            self.process_error(response)
-        return response
-
-    def process_success(self, response):
-        pass
-
-    def process_error(self, response):
-        pass
+        return self.api.send_request(method, path, params, data)
 
     def _create(self, params=None, data=None):
         return self.send_request('POST', self.LIST_REQ_PATH, params, data)

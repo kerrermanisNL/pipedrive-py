@@ -13,11 +13,11 @@ class UserResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, user):
         response = self._create(data=user.to_primitive())
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self, **params):
         return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
@@ -35,11 +35,11 @@ class PipelineResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, pipeline):
         response = self._create(data=pipeline.to_primitive())
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self, **params):
         return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
@@ -53,11 +53,11 @@ class StageResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, stage):
         response = self._create(data=stage.to_primitive())
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self, **params):
         return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
@@ -111,16 +111,16 @@ class OrganizationResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, organization):
         response = self._create(data=organization.to_primitive())
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def update(self, organization):
         response = self._update(organization.id,\
             data=organization.to_primitive())
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self, **params):
         return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
@@ -148,11 +148,11 @@ class DealResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, deal):
         response = self._create(data=deal.to_primitive())
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self, **params):
         return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
@@ -175,11 +175,11 @@ class ActivityResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def create(self, activity):
         response = self._create(data=activity.to_primitive())
-        return dict_to_model(response.json().get('data', {}) or {}, self.MODEL_CLASS)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
 
     def list(self, **params):
         return CollectionResponse(self._list(params=params), self.MODEL_CLASS)

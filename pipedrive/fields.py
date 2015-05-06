@@ -40,7 +40,7 @@ class FieldResource(BaseResource):
         if data['options']:
             data['options'] = [op['label'] for op in data['options']]
         response = self._create(data=data)
-        return dict_to_model(response.json().get('data', {}) or {}, self.FIELD_CLASS)
+        return dict_to_model(response.json()['data'], self.FIELD_CLASS)
 
     def list(self, **params):
         return CollectionResponse(self._list(params=params), self.FIELD_CLASS)
