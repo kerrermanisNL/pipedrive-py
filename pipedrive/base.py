@@ -114,8 +114,10 @@ class BaseResource(object):
         url = self.DETAIL_REQ_PATH.format(id=resource_ids)
         return self.send_request('DELETE', url, params, data)
 
-    def _bulk_delete(self, resource_ids, params=None, data=None):
-        return self.send_request('DELETE', self.LIST_REQ_PATH, params, data)
+    def _bulk_delete(self, resource_ids, params=None):
+        resource_ids_formatted = reduce(lambda a, b: a + "," + b,\
+            [str(resource_id) for resource_id in resource_ids])
+        return self.send_request('DELETE', self.LIST_REQ_PATH, params, {'ids': resource_ids_formatted})
 
     def _update(self, resource_ids, params=None, data=None):
         url = self.DETAIL_REQ_PATH.format(id=resource_ids)

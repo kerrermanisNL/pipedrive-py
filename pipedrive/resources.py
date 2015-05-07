@@ -184,6 +184,15 @@ class ActivityResource(BaseResource):
     def list(self, **params):
         return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
 
+    def delete(self, activity):
+        response = self._delete(activity.id)
+        return response.json()
+
+    def bulk_delete(self, activities):
+        activities_ids = [activity.id for activity in activities]
+
+        response = self._bulk_delete(activities_ids)
+        return response.json()
 
 
 # Registers the resources
