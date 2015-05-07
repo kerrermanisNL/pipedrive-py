@@ -165,6 +165,9 @@ class DealResource(BaseResource):
         return self._related_entities(resource_ids, 'activities', Activity,\
             params=params)
 
+    def delete(self, deal):
+        response = self._delete(deal.id)
+        return response.json()
 
 
 class ActivityResource(BaseResource):
