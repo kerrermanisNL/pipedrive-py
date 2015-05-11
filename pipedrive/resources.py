@@ -1,7 +1,8 @@
 # encoding:utf-8
 from base import BaseResource, PipedriveAPI, CollectionResponse, dict_to_model
 from models import (
-    User, Pipeline, Stage, SearchResult, Organization, Deal, Activity
+    User, Pipeline, Stage, SearchResult, Organization,
+    Deal, Activity, ActivityType
 )
 
 class UserResource(BaseResource):
@@ -198,6 +199,33 @@ class ActivityResource(BaseResource):
         return response.json()
 
 
+class ActivityTypeResource(BaseResource):
+    MODEL_CLASS = ActivityType
+    API_ACESSOR_NAME = 'activityType'
+    LIST_REQ_PATH = '/activityTypes'
+    DETAIL_REQ_PATH = '/activityTypes/{id}'
+
+    def detail(self, resource_ids):
+        response = self._detail(resource_ids)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
+
+    def create(self, activityType):
+        response = self._create(data=activityType.to_primitive())
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
+
+    def list(self, **params):
+        return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
+
+    def delete(self, activityType):
+        response = self._delete(activityType.id)
+        return response.json()
+
+    def bulk_delete(self, activityTypes):
+        activityTypes_ids = [activityType.id for activityType in activityTypes]
+
+        response = self._bulk_delete(activities_ids)
+        return response.json()
+
 # Registers the resources
 for resource_class in [
     UserResource,
@@ -207,5 +235,6 @@ for resource_class in [
     OrganizationResource,
     DealResource,
     ActivityResource,
+    ActivityTypeResource,
 ]:
     PipedriveAPI.register_resource(resource_class)

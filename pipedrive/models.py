@@ -104,3 +104,15 @@ class Activity(Model):
     org_id = PipedriveModelType(Organization, required=False)
     note = StringType(required=False)
     due_date = PipedriveDate(required=False)
+
+
+
+class ActivityType(Model):
+    """
+    Represents the possible types of activities.
+    """
+    id = IntType(required=False)
+    name = StringType(required=False)
+    key_string = StringType(required=False)
+    icon_key = StringType(required=False)
+    is_custom_flag = BooleanType(required=False)
