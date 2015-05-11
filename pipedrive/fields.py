@@ -1,4 +1,5 @@
 # encoding:utf-8
+import json
 from schematics.types import StringType, IntType
 from schematics.types.compound import ListType, ModelType
 from schematics.models import Model
@@ -38,7 +39,7 @@ class FieldResource(BaseResource):
         # square peg in a round hole
         # https://www.youtube.com/watch?v=C2YZnTL596Q
         if data['options']:
-            data['options'] = [op['label'] for op in data['options']]
+            data['options'] = json.dumps([o['label'] for o in data['options']])
         response = self._create(data=data)
         return dict_to_model(response.json()['data'], self.FIELD_CLASS)
 
