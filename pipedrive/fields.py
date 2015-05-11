@@ -29,7 +29,7 @@ class FieldResource(BaseResource):
 
     def detail(self, resource_ids):
         response = self._detail(resource_ids)
-        return self.FIELD_CLASS(raw_input(response.json()))
+        return dict_to_model(response.json()['data'], self.FIELD_CLASS)
 
     def create(self, field):
         data = field.to_native()
