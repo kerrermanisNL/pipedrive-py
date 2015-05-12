@@ -27,6 +27,19 @@ class UserResource(BaseResource):
         return CollectionResponse(self._find(term, params=params),\
             self.MODEL_CLASS)
 
+    def all(self):
+        users = []
+
+        has_more_users = True
+        next_start = 0
+        while has_more_users:
+            result = self.list(start=next_start, limit=500)
+            users = users + result.items
+            has_more_users = result.more_items_in_collection
+            next_start = result.next_start
+
+        return users
+
 
 class PipelineResource(BaseResource):
     MODEL_CLASS = Pipeline
