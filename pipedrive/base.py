@@ -29,7 +29,7 @@ class PipedriveAPI(object):
         if self.api_token in (None, ''):
             class MockResponse(requests.Response):
                 def json(self):
-                    return {}
+                    return {'data': {}}
 
             return MockResponse()
 
