@@ -1,6 +1,7 @@
 # encoding:utf-8
 from copy import deepcopy
 from logging import getLogger
+from time import sleep
 
 import requests
 from schematics.models import Model
@@ -16,8 +17,10 @@ BASE_URL = 'https://api.pipedrive.com/v1'
 class PipedriveAPI(object):
     resource_registry = {}
 
-    def __init__(self, api_token=None):
+    def __init__(self, api_token=None, max_retries=3, sleep_before_retry=1.0):
         self.api_token = api_token
+        self.max_retries = max_retries
+        self.sleep_before_retry = sleep_before_retry
 
     def __getattr__(self, item):
         try:
@@ -25,7 +28,19 @@ class PipedriveAPI(object):
         except KeyError:
             raise AttributeError('No resource is registered under that name.')
 
-    def send_request(self, method, path, params=None, data=None):
+    def send_request(self, method, path, params=None, data=None, retries=None):
+        if retries is None:
+            retries = self.max_retries
+
+
+        def handle_request_exception(err, log_message):
+            if retries <= 0:
+                logger.exception(log_message)
+                raise err
+            sleep(self.sleep_before_retry)
+            return self.send_request(method, path, params, data, retries-1)
+
+
         if self.api_token in (None, ''):
             class MockResponse(requests.Response):
                 def json(self):
@@ -54,11 +69,12 @@ class PipedriveAPI(object):
                 )
             return response
         except ValueError as err:
-            logger.exception("Request with non-JSON response: %s" % err.message)
-            raise err
+            return handle_request_exception(err,
+                "Request with non-JSON response: %s" % err.message)
+                
         except Exception as err:
-            logger.exception("Request failed: %s" % err.message)
-            raise err
+            return handle_request_exception(err,
+                "Request failed: %s" % err.message)
 
     @staticmethod
     def register_resource(resource_class):
@@ -101,7 +117,7 @@ class BaseResource(object):
         self.api = api
         setattr(self.api, self.API_ACESSOR_NAME, self)
 
-    def send_request(self, method, path, params, data):
+    def send_request(self, method, path, params, data, retries):
         return self.api.send_request(method, path, params, data)
 
     def _create(self, params=None, data=None):
@@ -117,7 +133,8 @@ class BaseResource(object):
     def _bulk_delete(self, resource_ids, params=None):
         resource_ids_formatted = reduce(lambda a, b: a + "," + b,\
             [str(resource_id) for resource_id in resource_ids])
-        return self.send_request('DELETE', self.LIST_REQ_PATH, params, {'ids': resource_ids_formatted})
+        return self.send_request('DELETE', self.LIST_REQ_PATH, params,
+            {'ids': resource_ids_formatted})
 
     def _update(self, resource_ids, params=None, data=None):
         url = self.DETAIL_REQ_PATH.format(id=resource_ids)
@@ -132,9 +149,9 @@ class BaseResource(object):
         params['term'] = term
         return self.send_request('GET', self.FIND_REQ_PATH, params, data)
 
-    def _related_entities(self, resource_ids, entity_name, entity_class,\
+    def _related_entities(self, resource_ids, entity_name, entity_class,
             params=None, data=None):
-        entity_path = self.RELATED_ENTITIES_PATH.format(id=resource_ids,\
+        entity_path = self.RELATED_ENTITIES_PATH.format(id=resource_ids,
             entity=entity_name)
         response = self.send_request('GET', entity_path, params, data)
         return CollectionResponse(response, entity_class)
