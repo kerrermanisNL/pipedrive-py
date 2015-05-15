@@ -17,10 +17,10 @@ BASE_URL = 'https://api.pipedrive.com/v1'
 class PipedriveAPI(object):
     resource_registry = {}
 
-    def __init__(self, api_token=None, max_retries=3, sleep_before_retry=1.0):
+    def __init__(self, api_token=None, max_retries=4, retry_backoff_base=4):
         self.api_token = api_token
         self.max_retries = max_retries
-        self.sleep_before_retry = sleep_before_retry
+        self.retry_backoff_base = retry_backoff_base
 
     def __getattr__(self, item):
         try:
@@ -28,17 +28,14 @@ class PipedriveAPI(object):
         except KeyError:
             raise AttributeError('No resource is registered under that name.')
 
-    def send_request(self, method, path, params=None, data=None, retries=None):
-        if retries is None:
-            retries = self.max_retries
-
+    def send_request(self, method, path, params=None, data=None, attempt=0):
 
         def handle_request_exception(err, log_message):
-            if retries <= 0:
+            if attempt >= self.max_retries:
                 logger.exception(log_message)
                 raise err
-            sleep(self.sleep_before_retry)
-            return self.send_request(method, path, params, data, retries-1)
+            sleep(self.retry_backoff_base ** attempt)
+            return self.send_request(method, path, params, data, attempt + 1)
 
 
         if self.api_token in (None, ''):
