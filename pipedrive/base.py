@@ -117,7 +117,7 @@ class BaseResource(object):
         self.api = api
         setattr(self.api, self.API_ACESSOR_NAME, self)
 
-    def send_request(self, method, path, params, data, retries):
+    def send_request(self, method, path, params, data):
         return self.api.send_request(method, path, params, data)
 
     def _create(self, params=None, data=None):
