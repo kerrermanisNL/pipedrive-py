@@ -3,6 +3,7 @@ from schematics.models import Model
 from schematics.types import (
     StringType, IntType, DecimalType, DateTimeType, EmailType, BooleanType
 )
+from schematics.types.base import BaseType
 from schematics.types.compound import ListType, ModelType
 from types import (
     PipedriveDateTime, PipedriveModelType, PipedriveDate, PipedriveTime
@@ -106,7 +107,6 @@ class Activity(Model):
     due_date = PipedriveDate(required=False)
 
 
-
 class ActivityType(Model):
     """
     Represents the possible types of activities.
@@ -116,3 +116,16 @@ class ActivityType(Model):
     key_string = StringType(required=False)
     icon_key = StringType(required=False)
     is_custom_flag = BooleanType(required=False)
+
+
+class Person(Model):
+    """
+    Model for Pipedrive persons.
+    """
+    name = StringType(required=True)
+    owner_id = PipedriveModelType(User, required=False)
+    org_id = PipedriveModelType(Organization, required=False)
+    email = BaseType(required=False)
+    phone = BaseType(required=False)
+    visible_to = IntType(required=False)
+    add_time = PipedriveDateTime(required=False)

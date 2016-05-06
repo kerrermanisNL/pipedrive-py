@@ -37,7 +37,6 @@ class PipedriveAPI(object):
             sleep(self.retry_backoff_base ** attempt)
             return self.send_request(method, path, params, data, attempt + 1)
 
-
         if self.api_token in (None, ''):
             class MockResponse(requests.Response):
                 def json(self):
