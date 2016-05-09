@@ -2,7 +2,7 @@
 from base import BaseResource, PipedriveAPI, CollectionResponse, dict_to_model
 from models import (
     User, Pipeline, Stage, SearchResult, Organization,
-    Deal, Activity, ActivityType, Person
+    Deal, Activity, ActivityType, Person, Note
 )
 
 
@@ -277,6 +277,38 @@ class PersonResource(BaseResource):
         response = self._bulk_delete(person_ids)
         return response.json()
 
+
+class NoteResource(BaseResource):
+    MODEL_CLASS = Note
+    API_ACESSOR_NAME = 'note'
+    LIST_REQ_PATH = '/notes'
+    DETAIL_REQ_PATH = '/notes/{id}'
+
+    def detail(self, resource_ids):
+        response = self._detail(resource_ids)
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
+
+    def create(self, note):
+        response = self._create(data=note.to_primitive())
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
+
+    def update(self, note):
+        response = self._update(note.id, data=note.to_primitive())
+        return dict_to_model(response.json()['data'], self.MODEL_CLASS)
+
+    def list(self, **params):
+        return CollectionResponse(self._list(params=params), self.MODEL_CLASS)
+
+    def delete(self, note):
+        response = self._delete(note.id)
+        return response.json()
+
+    def bulk_delete(self, notes):
+        note_ids = [note.id for note in notes]
+
+        response = self._bulk_delete(note_ids)
+        return response.json()
+
 # Registers the resources
 for resource_class in [
     UserResource,
@@ -288,5 +320,6 @@ for resource_class in [
     ActivityResource,
     ActivityTypeResource,
     PersonResource,
+    NoteResource,
 ]:
     PipedriveAPI.register_resource(resource_class)
