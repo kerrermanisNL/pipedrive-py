@@ -122,6 +122,7 @@ class Person(Model):
     """
     Model for Pipedrive persons.
     """
+    id = IntType(required=False)
     name = StringType(required=True)
     owner_id = PipedriveModelType(User, required=False)
     org_id = PipedriveModelType(Organization, required=False)
