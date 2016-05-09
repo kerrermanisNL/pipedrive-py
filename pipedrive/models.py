@@ -129,3 +129,17 @@ class Person(Model):
     phone = ListType(DictType(StringType), required=False)
     visible_to = IntType(required=False)
     add_time = PipedriveDateTime(required=False)
+
+
+class Note(Model):
+    """
+    Model for Pipedrive notes.
+    """
+    id = IntType(required=False)
+    content = StringType(required=True)
+    deal_id = PipedriveModelType(Deal, required=False)
+    person_id = PipedriveModelType(Person, required=False)
+    org_id = PipedriveModelType(Organization, required=False)
+    pinned_to_deal_flag = BooleanType(required=False)
+    pinned_to_person_flag = BooleanType(required=False)
+    pinned_to_organization_flag = BooleanType(required=False)

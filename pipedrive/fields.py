@@ -64,6 +64,10 @@ class ProductField(FieldModel):
     FIELD_PARENT_TYPE = 'productField'
 
 
+class NoteField(FieldModel):
+    FIELD_PARENT_TYPE = 'noteField'
+
+
 class DealFieldResource(FieldResource):
     FIELD_CLASS = DealField
     API_ACESSOR_NAME = 'dealField'
@@ -92,7 +96,15 @@ class ProductFieldResource(FieldResource):
     DETAIL_REQ_PATH = '/productFields/{id}'
 
 
+class NoteFieldResource(FieldResource):
+    FIELD_CLASS = NoteField
+    API_ACESSOR_NAME = 'noteField'
+    LIST_REQ_PATH = '/noteFields'
+    DETAIL_REQ_PATH = '/noteFields/{id}'
+
+
 PipedriveAPI.register_resource(DealFieldResource)
 PipedriveAPI.register_resource(OrganizationFieldResource)
 PipedriveAPI.register_resource(PersonFieldResource)
 PipedriveAPI.register_resource(ProductFieldResource)
+PipedriveAPI.register_resource(NoteFieldResource)
