@@ -140,6 +140,3 @@ class Note(Model):
     deal_id = PipedriveModelType(Deal, required=False)
     person_id = PipedriveModelType(Person, required=False)
     org_id = PipedriveModelType(Organization, required=False)
-    pinned_to_deal_flag = BooleanType(required=False)
-    pinned_to_person_flag = BooleanType(required=False)
-    pinned_to_organization_flag = BooleanType(required=False)
